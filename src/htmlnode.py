@@ -14,6 +14,9 @@ class HtmlNode:
 
     def props_to_html(self):
         repr = ""
+        if not self.props:
+            return repr
+
         for prop in self.props:
             repr += f' {prop}="{self.props[prop]}"'
         return repr
