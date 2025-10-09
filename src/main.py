@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from generatepage import generate_page
+from generatepage import generate_pages_recursive
 
 
 def main():
@@ -10,7 +10,7 @@ def main():
     if os.path.exists(destination):
         shutil.rmtree(destination)
     copy(source, destination)
-    generate_page("content/index.md", "template.html", "public/index.html")
+    generate_pages_recursive("content", "template.html", "public")
 
 def copy(source, destination):
     os.mkdir(destination)
