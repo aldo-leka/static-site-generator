@@ -10,7 +10,7 @@ def markdown_to_html_node(markdown):
     for block in blocks:
         match block_to_block_type(block):
             case BlockType.PARAGRAPH:
-                nodes.append(ParentNode("p", text_to_children(block)))
+                nodes.append(ParentNode("p", text_to_children(" ".join(block.split("\n")))))
             case BlockType.HEADING:
                 h_count = 0
                 for letter in block:
@@ -24,22 +24,26 @@ def markdown_to_html_node(markdown):
                 parent = ParentNode("code", [child])
                 nodes.append(ParentNode("pre", [parent]))
             case BlockType.QUOTE:
-                nodes.append(ParentNode("blockquote", text_to_children(block)))
+                parts = block.split("\n")
+                for i in range(len(parts)):
+                    parts[i] = f"<p>{parts[i][1:]}</p>"
+                nodes.append(ParentNode("blockquote", text_to_children("\n".join(parts))))
             case BlockType.UNORDERED_LIST:
-                parents = []
-                for child in text_to_children(block):
-                    parents.append(ParentNode("li", [child]))
-                nodes.append(ParentNode("ul", parents))
+                lines = block.split("\n")
+                list_items = []
+                for i in range(len(lines)):
+                    list_items.append(ParentNode("li", text_to_children(lines[i][2:])))
+                nodes.append(ParentNode("ul", list_items))
             case BlockType.ORDERED_LIST:
-                parents = []
-                for child in text_to_children(block):
-                    parents.append(ParentNode("li", [child]))
-                nodes.append(ParentNode("ol", parents))
+                lines = block.split("\n")
+                list_items = []
+                for i in range(len(lines)):
+                    list_items.append(ParentNode("li", text_to_children(lines[i][2:])))
+                nodes.append(ParentNode("ol", list_items))
 
     return ParentNode("div", nodes)
 
 def text_to_children(text):
-    text = " ".join(text.split("\n"))
     text_nodes = text_to_textnodes(text)
     children = []
     for text_node in text_nodes:
