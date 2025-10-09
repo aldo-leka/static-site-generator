@@ -26,7 +26,7 @@ def markdown_to_html_node(markdown):
             case BlockType.QUOTE:
                 parts = block.split("\n")
                 for i in range(len(parts)):
-                    parts[i] = f"<p>{parts[i][1:]}</p>"
+                    parts[i] = f"{parts[i][2:]}"
                 nodes.append(ParentNode("blockquote", text_to_children("\n".join(parts))))
             case BlockType.UNORDERED_LIST:
                 lines = block.split("\n")
