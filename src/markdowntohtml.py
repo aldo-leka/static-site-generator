@@ -38,7 +38,7 @@ def markdown_to_html_node(markdown):
                 lines = block.split("\n")
                 list_items = []
                 for i in range(len(lines)):
-                    list_items.append(ParentNode("li", text_to_children(lines[i][2:])))
+                    list_items.append(ParentNode("li", text_to_children(lines[i][3:])))
                 nodes.append(ParentNode("ol", list_items))
 
     return ParentNode("div", nodes)
